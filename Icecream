@@ -1,0 +1,73 @@
+#include <iostream>
+
+struct Student {
+    int rollNumber;
+    bool likesVanilla;
+    bool likesButterscotch;
+    Student* next;
+};
+
+class IceCreamSets {
+public:
+    Student* setA;
+    Student* setB;
+
+    IceCreamSets() : setA(nullptr), setB(nullptr) {}
+
+    void insertStudent(Student*& set, int rollNumber, bool likesVanilla, bool likesButterscotch) {
+        Student* newStudent = new Student{rollNumber, likesVanilla, likesButterscotch, nullptr};
+        if (!set) {
+            set = newStudent;
+        } else {
+            Student* current = set;
+            while (current->next) {
+                current = current->next;
+            }
+            current->next = newStudent;
+        }
+    }
+
+    void computeAndDisplaySets() {
+    }
+
+private:
+};
+
+void inputStudent(const char* setName, Student*& set, IceCreamSets& iceCreamSets);
+
+int main() {
+    IceCreamSets iceCreamSets;
+
+    char choice;
+    do {
+        inputStudent("Set A", iceCreamSets.setA, iceCreamSets);
+        std::cout << "Add another student to Set A? (y/n): ";
+        std::cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+
+    do {
+        inputStudent("Set B", iceCreamSets.setB, iceCreamSets);
+        std::cout << "Add another student to Set B? (y/n): ";
+        std::cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+
+    iceCreamSets.computeAndDisplaySets();
+
+    return 0;
+}
+
+void inputStudent(const char* setName, Student*& set, IceCreamSets& iceCreamSets) {
+    int rollNumber;
+    char likesVanilla, likesButterscotch;
+
+    std::cout << "Enter Roll Number for " << setName << ": ";
+    std::cin >> rollNumber;
+
+    std::cout << "Likes Vanilla? (y/n): ";
+    std::cin >> likesVanilla;
+
+    std::cout << "Likes Butterscotch? (y/n): ";
+    std::cin >> likesButterscotch;
+
+    iceCreamSets.insertStudent(set, rollNumber, (likesVanilla == 'y'), (likesButterscotch == 'y'));
+}
