@@ -1,0 +1,31 @@
+def get_matrix(rows, cols):
+    return [[int(input(f"Enter element at position ({i + 1}, {j + 1}): ")) for j in range(cols)] for i in range(rows)]
+
+def matrix_operation(matrix1, matrix2, operation):
+    operations = {'+': lambda x, y: x + y, '-': lambda x, y: x - y, '*': lambda x, y: x * y}
+    if operation == '*':
+        return [[sum(a * b for a, b in zip(row, col)) for col in zip(*matrix2)] for row in matrix1]
+    elif operation in operations:
+        return [[operations[operation](matrix1[i][j], matrix2[i][j]) for j in range(len(matrix1[0]))] for i in range(len(matrix1))]
+    else:
+        return None
+
+def transpose_matrix(matrix):
+    return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
+
+rows1, cols1 = map(int, input("Enter rows and columns for the first matrix: ").split())
+rows2, cols2 = map(int, input("Enter rows and columns for the second matrix: ").split())
+matrix1 = get_matrix(rows1, cols1)
+matrix2 = get_matrix(rows2, cols2)
+
+operations = ['+', '-', '*']
+for operation in operations:
+    print(f"\nMatrix {operation}:")
+    result_matrix = matrix_operation(matrix1, matrix2, operation)
+    if result_matrix:
+        [print(*row) for row in result_matrix]
+    else:
+        print("Invalid operation")
+
+print("\nMatrix Transpose:")
+[print(*row) for row in transpose_matrix(matrix1)]
