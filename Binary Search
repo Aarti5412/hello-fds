@@ -1,0 +1,39 @@
+def binary_search_iterative(phonebook, name):
+    start, end = 0, len(phonebook) - 1
+    while start <= end:
+        middle = (start + end) // 2
+        if phonebook[middle][0] == name:
+            return middle
+        elif phonebook[middle][0] < name:
+            start = middle + 1
+        else:
+            end = middle - 1
+    return -1
+
+def insert_friend(phonebook, name, number):
+    index = binary_search_iterative(phonebook, name)
+    if index == -1:
+        phonebook.append((name, number))
+        phonebook.sort()
+        print(f"Friend {name} added.")
+    else:
+        print(f"Friend {name} is already in the phonebook.")
+    return phonebook
+
+def main():
+    pb = [("Alice", "123456789"), ("Bob", "987654321"), ("Charlie", "567890123")]
+
+    new_name, new_number = input("Enter the name and number of the new friend (separated by a space): ").split()
+    pb = insert_friend(pb, new_name, new_number)
+    print(f"Phonebook after inserting the new friend: {pb}")
+
+    existing_name, existing_number = input("Enter the name and number of an existing friend (separated by a space): ").split()
+    pb = insert_friend(pb, existing_name, existing_number)
+    print(f"Phonebook after trying to insert an existing friend: {pb}")
+
+    search_name = input("Enter the name of the friend to search: ")
+    index = binary_search_iterative(pb, search_name)
+    print(f"Friend found at index {index}" if index != -1 else "Friend not found")
+
+if __name__ == "__main__":
+    main()
