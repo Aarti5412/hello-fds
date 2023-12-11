@@ -1,0 +1,85 @@
+#include <iostream>
+
+class Deque {
+private:
+    static const int MAX_SIZE = 100;
+    int arr[MAX_SIZE], front{-1}, rear{-1};
+
+public:
+    void insertFront(int element) {
+        if ((front == 0 && rear == MAX_SIZE - 1) || (front == rear + 1)) return;
+        front = (front == -1) ? (rear = 0) : (front == 0) ? (front = MAX_SIZE - 1) : --front;
+        arr[front] = element;
+        std::cout << "Inserted at front: " << element << std::endl;
+    }
+
+    void insertRear(int element) {
+        if ((front == 0 && rear == MAX_SIZE - 1) || (front == rear + 1)) return;
+        rear = (front == -1) ? (front = 0) : (rear == MAX_SIZE - 1) ? (rear = 0) : ++rear;
+        arr[rear] = element;
+        std::cout << "Inserted at rear: " << element << std::endl;
+    }
+
+    void deleteFront() {
+        if (front == -1) return;
+        std::cout << "Deleted from front: " << arr[front] << std::endl;
+        (front == rear) ? (front = rear = -1) : (front == MAX_SIZE - 1) ? front = 0 : ++front;
+    }
+
+    void deleteRear() {
+        if (front == -1) return;
+        std::cout << "Deleted from rear: " << arr[rear] << std::endl;
+        (front == rear) ? (front = rear = -1) : (rear == 0) ? rear = MAX_SIZE - 1 : --rear;
+    }
+
+    void displayDeque() const {
+        if (front == -1) {
+            std::cout << "Deque is empty.\n";
+        } else {
+            std::cout << "Deque elements:\n";
+            for (int i = front; i != (rear + 1) % MAX_SIZE; i = (i + 1) % MAX_SIZE) {
+                std::cout << arr[i] << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+};
+
+int main() {
+    Deque deque;
+    int choice, element;
+
+    do {
+        std::cout << "\nDeque Simulation Menu:\n1. Insert Front\n2. Insert Rear\n3. Delete Front\n4. Delete Rear\n5. Display Deque\n0. Exit\nEnter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                std::cout << "Enter element to insert at the front: ";
+                std::cin >> element;
+                deque.insertFront(element);
+                break;
+            case 2:
+                std::cout << "Enter element to insert at the rear: ";
+                std::cin >> element;
+                deque.insertRear(element);
+                break;
+            case 3:
+                deque.deleteFront();
+                break;
+            case 4:
+                deque.deleteRear();
+                break;
+            case 5:
+                deque.displayDeque();
+                break;
+            case 0:
+                std::cout << "Exiting the program.\n";
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 0);
+
+    return 0;
+}
