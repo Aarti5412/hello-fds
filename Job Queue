@@ -1,0 +1,92 @@
+#include <iostream>
+
+class JobQueue {
+private:
+    static const int MAX_JOBS = 100;
+    std::string jobs[MAX_JOBS];
+    int front, rear;
+
+public:
+    JobQueue() : front(-1), rear(-1) {}
+
+    void addJob(const std::string& job) {
+        if (rear == MAX_JOBS - 1) {
+            std::cout << "Job queue is full. Cannot add more jobs.\n";
+        } else {
+            if (front == -1) {
+                front = 0;
+            }
+            jobs[++rear] = job;
+            std::cout << "Job added: " << job << std::endl;
+        }
+    }
+
+    void deleteJob() {
+        if (front == -1) {
+            std::cout << "Job queue is empty. No job to delete.\n";
+        } else {
+            std::cout << "Job deleted: " << jobs[front] << std::endl;
+
+            if (front == rear) {
+                front = rear = -1;
+            } else {
+                ++front;
+            }
+        }
+    }
+
+    void displayJobs() const {
+        if (front == -1) {
+            std::cout << "Job queue is empty.\n";
+        } else {
+            std::cout << "Jobs in the queue:\n";
+            for (int i = front; i <= rear; ++i) {
+                std::cout << jobs[i] << std::endl;
+            }
+        }
+    }
+};
+
+int main() {
+    JobQueue jobQueue;
+    int choice;
+    std::string job;
+
+    do {
+        std::cout << "\nJob Queue Simulation Menu:\n";
+        std::cout << "1. Add Job\n";
+        std::cout << "2. Delete Job\n";
+        std::cout << "3. Display Jobs\n";
+        std::cout << "0. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                std::cout << "Enter job to add: ";
+                std::cin.ignore();
+                std::getline(std::cin, job);
+                jobQueue.addJob(job);
+                break;
+
+            case 2:
+                jobQueue.deleteJob();
+                break;
+
+            case 3:
+                jobQueue.displayJobs();
+                break;
+
+            case 0:
+                std::cout << "Exiting the program.\n";
+                break;
+
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+                break;
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
