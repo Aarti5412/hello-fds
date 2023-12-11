@@ -1,0 +1,49 @@
+def calculate_average(marks):
+    total_marks = sum(max(0, mark) for mark in marks)
+    total_students = len(marks)
+    return total_marks / total_students if total_students > 0 else 0
+
+def find_highest_lowest(marks):
+    valid_marks = [mark for mark in marks if mark != -1]
+    if not valid_marks:
+        return None, None
+    return max(valid_marks), min(valid_marks)
+
+def count_absent_students(marks):
+    return marks.count(-1)
+
+def find_mode(marks):
+    valid_marks = [mark for mark in marks if mark != -1]
+    if not valid_marks:
+        return None
+
+    frequency_dict = {}
+    for mark in valid_marks:
+        frequency_dict[mark] = frequency_dict.get(mark, 0) + 1
+
+    mode = max(frequency_dict, key=frequency_dict.get)
+    return mode
+
+def main():
+    n = int(input("Enter the number of students: "))
+
+    marks = []
+    for i in range(n):
+        mark = int(input(f"Enter the marks for student {i + 1} (-1 for absent): "))
+        marks.append(mark)
+
+    average = calculate_average(marks)
+    print(f"Average score of the class: {average:.2f}")
+
+    highest, lowest = find_highest_lowest(marks)
+    print(f"Highest score in the class: {highest}")
+    print(f"Lowest score in the class: {lowest}")
+
+    absent_count = count_absent_students(marks)
+    print(f"Number of students absent for the test: {absent_count}")
+
+    mode = find_mode(marks)
+    print(f"Mark with the highest frequency: {mode}")
+
+if __name__ == "__main__":
+    main()
