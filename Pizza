@@ -1,0 +1,115 @@
+#include <iostream>
+
+class CircularQueue {
+private:
+    static const int MAX_SIZE = 100;
+    int orders[MAX_SIZE];
+    int front, rear, count, maxOrders;
+
+public:
+    CircularQueue(int max) : front(-1), rear(-1), count(0), maxOrders(max) {}
+
+    bool isFull() const {
+        return count == maxOrders;
+    }
+
+    bool isEmpty() const {
+        return count == 0;
+    }
+
+    void enqueue(int order) {
+        if (isFull()) {
+            std::cout << "Queue is full. Cannot place more orders.\n";
+            return;
+        }
+
+        if (isEmpty()) {
+            front = rear = 0;
+        } else {
+            rear = (rear + 1) % MAX_SIZE;
+        }
+
+        orders[rear] = order;
+        count++;
+
+        std::cout << "Order " << order << " placed successfully.\n";
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            std::cout << "Queue is empty. No orders to serve.\n";
+            return;
+        }
+
+        int servedOrder = orders[front];
+        if (front == rear) {
+            front = rear = -1;
+        } else {
+            front = (front + 1) % MAX_SIZE;
+        }
+
+        count--;
+
+        std::cout << "Order " << servedOrder << " served.\n";
+    }
+
+    void displayQueue() const {
+        if (isEmpty()) {
+            std::cout << "Queue is empty.\n";
+        } else {
+            std::cout << "Orders in the queue:\n";
+            int i = front;
+            do {
+                std::cout << orders[i] << " ";
+                i = (i + 1) % MAX_SIZE;
+            } while (i != (rear + 1) % MAX_SIZE);
+            std::cout << "\n";
+        }
+    }
+};
+
+int main() {
+    int maxOrders;
+    std::cout << "Enter the maximum number of orders the pizza parlor can accept: ";
+    std::cin >> maxOrders;
+
+    CircularQueue pizzaQueue(maxOrders);
+    int choice, order;
+
+    do {
+        std::cout << "\nPizza Parlor Simulation Menu:\n";
+        std::cout << "1. Place Order\n";
+        std::cout << "2. Serve Order\n";
+        std::cout << "3. Display Orders Queue\n";
+        std::cout << "0. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                std::cout << "Enter the order number to place: ";
+                std::cin >> order;
+                pizzaQueue.enqueue(order);
+                break;
+
+            case 2:
+                pizzaQueue.dequeue();
+                break;
+
+            case 3:
+                pizzaQueue.displayQueue();
+                break;
+
+            case 0:
+                std::cout << "Exiting the program.\n";
+                break;
+
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+                break;
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
