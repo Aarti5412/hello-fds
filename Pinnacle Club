@@ -1,0 +1,105 @@
+#include <iostream>
+
+struct Member { int prn; char name[50]; Member* next; };
+
+void addMember(Member*& head, int prn, const char* name) {
+    Member* current = head;
+    while (current && current->next)
+        current = current->next;
+
+    Member* newMember = new Member{prn, "", nullptr};
+    int i = 0;
+    while (name[i] != '\0' && i < 49) {
+        newMember->name[i] = name[i];
+        i++;
+    }
+    newMember->name[i] = '\0';
+
+    if (!current) head = newMember;
+    else current->next = newMember;
+}
+
+void deleteMember(Member*& head, int prn) {
+    if (!head) { std::cout << "List empty.\n"; return; }
+    if (head->prn == prn) { Member* temp = head; head = head->next; delete temp; std::cout << "President deleted.\n"; return; }
+
+    Member* current = head;
+    while (current->next && current->next->prn != prn)
+        current = current->next;
+
+    if (current->next) {
+        Member* temp = current->next;
+        current->next = current->next->next;
+        delete temp;
+        std::cout << "Member deleted.\n";
+    } else std::cout << "Member not found.\n";
+}
+
+int totalMembers(Member* head) {
+    int count = 0;
+    Member* current = head;
+    while (current) { count++; current = current->next; }
+    return count;
+}
+
+void displayMembers(Member* head) {
+    Member* current = head;
+    while (current) {
+        std::cout << "PRN: " << current->prn << ", Name: " << current->name << "\n";
+        current = current->next;
+    }
+}
+
+void displayReverse(Member* head) {
+    if (!head) return;
+    displayReverse(head->next);
+    std::cout << "PRN: " << head->prn << ", Name: " << head->name << "\n";
+}
+
+void concatenateLists(Member*& first, Member* second) {
+    Member* current = first;
+    while (current && current->next)
+        current = current->next;
+
+    if (current) current->next = second;
+    else first = second;
+}
+
+int main() {
+    Member* division1 = nullptr;
+    Member* division2 = nullptr;
+    int prn;
+    char name[50];
+
+    std::cout << "Enter details for division 1:\n";
+    std::cout << "Enter President PRN: "; std::cin >> prn;
+    std::cout << "Enter President Name: "; std::cin.ignore(); std::cin.getline(name, sizeof(name)); addMember(division1, prn, name);
+
+    std::cout << "Enter Member PRN: "; std::cin >> prn;
+    std::cout << "Enter Member Name: "; std::cin.ignore(); std::cin.getline(name, sizeof(name)); addMember(division1, prn, name);
+
+    std::cout << "Enter details for division 2:\n";
+    std::cout << "Enter President PRN: "; std::cin >> prn;
+    std::cout << "Enter President Name: "; std::cin.ignore(); std::cin.getline(name, sizeof(name)); addMember(division2, prn, name);
+
+    std::cout << "Enter Member PRN: "; std::cin >> prn;
+    std::cout << "Enter Member Name: "; std::cin.ignore(); std::cin.getline(name, sizeof(name)); addMember(division2, prn, name);
+
+    concatenateLists(division1, division2);
+
+    std::cout << "Total Members: " << totalMembers(division1) << "\nMembers of the Club:\n";
+    displayMembers(division1);
+
+    std::cout << "Enter PRN to delete a member: "; std::cin >> prn;
+    deleteMember(division1, prn);
+
+    std::cout << "Total Members: " << totalMembers(division1) << "\nMembers of the Club:\n";
+    displayMembers(division1);
+
+    std::cout << "Members in reverse order:\n";
+    displayReverse(division1);
+
+    while (division1) { Member* temp = division1; division1 = division1->next; delete temp; }
+
+    return 0;
+}
