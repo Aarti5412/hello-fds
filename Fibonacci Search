@@ -1,0 +1,43 @@
+def fibonacci_search(pb, n):
+    fm2, fm1, f = 0, 1, 1
+    while f < len(pb):
+        fm2, fm1, f = fm1, f, fm1 + fm2
+
+    o = -1
+    while f > 1:
+        i = min(o + fm2, len(pb) - 1)
+        if pb[i][0] < n:
+            f, fm1, fm2, o = fm1, fm2, f - fm1, i
+        elif pb[i][0] > n:
+            f, fm1, fm2 = fm2, fm1 - fm2, fm2 - fm1
+        else:
+            return i
+    return o + 1 if fm1 and o < len(pb) - 1 and pb[o + 1][0] == n else -1
+
+def add_phone_number(pb, name, number):
+    index = fibonacci_search(pb, name)
+    if index != -1:
+        pb[index] = (name, number)
+        print(f"Phone number for {name} updated to {number}")
+    else:
+        pb.append((name, number))
+        pb.sort()
+        print(f"Friend {name} added with phone number {number}")
+
+def main():
+    pb = [("Alice", "123456789"), ("Bob", "987654321"), ("Charlie", "567890123")]
+
+    search_name = input("Enter the name of the friend to search: ")
+    index = fibonacci_search(pb, search_name)
+
+    if index != -1:
+        print(f"Friend found at index {index}: {pb[index]}")
+    else:
+        print("Friend not found")
+
+    new_name = input("Enter the name of the new friend: ")
+    new_number = input("Enter the phone number of the new friend: ")
+    add_phone_number(pb, new_name, new_number)
+
+if __name__ == "__main__":
+    main()
