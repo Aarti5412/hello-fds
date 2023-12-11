@@ -1,0 +1,30 @@
+def get_student_list(group_name):
+    n = int(input(f"Enter the number of students in Group {group_name}: "))
+    students = []  # Error 1: Missing list initialization
+    for i in range(n):
+        student = input(f"Enter the name of student {i + 1} in Group {group_name}: ")
+        if student not in students:
+            students.append(student)
+    return students
+
+def compute_results():
+    cricket_players = get_student_list("Cricket")
+    badminton_players = get_student_list("Badminton")
+    football_players = get_student_list("Football")
+
+    both_cb = [student for student in cricket_players if student in badminton_players]  # Error 2: Incorrect list comprehension
+    either_cb = list(set(cricket_players + badminton_players) - set(both_cb))
+    neither_cb = [student for student in cricket_players + badminton_players + football_players if
+                  student not in cricket_players and student not in badminton_players]
+    cbf_not_bm = [student for student in cricket_players + football_players if student not in badminton_players]
+    
+    return both_cb, either_cb, len(neither_cb), len(cbf_not_bm)
+
+def display_results(both_cb, either_cb, neither_cb_count, cbf_not_bm_count):
+    print("1) List of students who play both cricket and badminton:", both_cb)
+    print("2) List of students who play either cricket or badminton but not both:", either_cb)
+    print("3) Number of students who play neither cricket nor badminton:", neither_cb_count)
+    print("4) Number of students who play cricket and football but not badminton:", cbf_not_bm_count)
+
+results = compute_results()
+display_results(*results)
