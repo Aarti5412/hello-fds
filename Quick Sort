@@ -7,14 +7,18 @@ def quicksort(arr):
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)
 
-num_students = int(input("Enter the number of students: "))
-percentages = []
+def main():
+    num_students = int(input("Enter the number of students: "))
+    percentages = []
 
-for i in range(num_students):
-    percentage = float(input(f"Enter the percentage for student {i + 1}: "))
-    percentages.append(percentage)
+    for i in range(num_students):
+        percentage = float(input(f"Enter the percentage for student {i + 1}: "))
+        percentages.append(percentage)
 
-sorted_percentages = quicksort(percentages)
+    sorted_percentages = quicksort(percentages)
 
-print("\nOriginal percentages:", percentages)
-print("Top five scores using Quick Sort:", sorted_percentages[-5:])
+    print("\nOriginal percentages:", percentages)
+    print("Top five scores using Quick Sort:", sorted_percentages[-5:])
+
+if __name__ == "__main__":
+    main()
